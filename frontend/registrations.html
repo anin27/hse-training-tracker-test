@@ -27,11 +27,35 @@
             <option value="HSE Department">HSE Department</option>
             <option value="Engineering">Engineering</option>
         </select>
-        
-
-
-    </div>
-
+        <select id="regEvent">
+            <option value="">Select Training Event</option>
+        </select>
+        <select id="regEvent">
+            <option value="Pending">Pending</option>
+            <option value="Attended">Attended</option>
+            <option value="Absent">Absent</option>
+        </select>
+        <button onclick="registerEmployee()">Register Employee</button>
+        <button onclick="clearRegForm()" class="secondary">Clear</button>
     
+    <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Employee</th>
+                    <th>Emp ID</th>
+                    <th>Department</th>
+                    <th>Event</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="regTableBody">
+
+            </tbody>
+    </table>
+    </div>   
+    <script src="api.js"></script> 
+    <script src="app.js"></script>
 </body>
 </html>
