@@ -61,9 +61,9 @@ nav a.active {
 
 .stat-box{
     display: block;
-    font-size: 2rem;
+    font-size: 10px;
     font-weight: bold;
-    color: blue;
+    color: black;
 }
 
 .form-section{
