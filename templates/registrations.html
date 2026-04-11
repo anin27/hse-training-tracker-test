@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrations - HSE Tracker</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="../static/css/style.css">
 </head>
 <body>
     <div class="navbar">
         <h2>Petrofac HSE Tracker</h2>
 
         <div class="nav-links">
-            <a href="/">Training Events</a>
-            <a href="/registrations-page" class="active">Registrations</a>
+            <a href="training_events.html">Training Events</a>
+            <a href="registrations.html" class="active">Registrations</a>
         </div>
     </div>
 
@@ -45,8 +45,10 @@
             <option value="Completed">Absent</option>
         </select>
         
+        <div>
         <button>Register Employee</button>
         <button>Clear</button>
+        </div>
         </div>
         
         <table>
@@ -61,11 +63,12 @@
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="regTableBody">
 
             </tbody>
-    </table>
-    </div>   
+        </table>
+    </div>  
+    <script src="../static/js/registrations.js"></script> 
     
 </body>
 </html>

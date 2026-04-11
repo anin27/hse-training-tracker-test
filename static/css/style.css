@@ -1,0 +1,91 @@
+/* Page background */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #d3d3d3;
+}
+
+
+.navbar {
+    background-color: #0505a8;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    padding: 8px 15px;
+}
+
+
+.nav-links a.active {
+    background-color: #2d2df3;
+    border-radius: 5px;
+}
+
+
+.container {
+    width: 80%;
+    margin: 30px auto;
+}
+
+
+.form-box {
+    background-color: #cfcfcf;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+
+button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    margin-right: 10px;
+    cursor: pointer;
+    color: white;
+}
+
+
+button:first-of-type {
+    background-color: #2d2df3;
+}
+
+
+button:last-of-type {
+    background-color: gray;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th,
+td {
+    padding: 14px 10px;
+    text-align: left;
+    border-bottom: 1px solid #aaa;
+}
+
+
+th {
+    background-color: #e0e0e0;
+}

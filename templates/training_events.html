@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Training Events - HSE Tracker</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="../static/css/style.css">
 </head>
 <body>
     <div class ="navbar">
         <h2>Petrofac HSE Tracker</h2>
         <div class="nav-links">
-            <a href="/" class="active">Training Events</a>
-            <a href="/registrations-page">Registrations</a>
+            <a href="training_events.html" class="active">Training Events</a>
+            <a href="registrations.html">Registrations</a>
         </div> 
     </div>
 
@@ -28,15 +28,18 @@
                 <option value="">Select Category</option>
                 <option>Safety</option>
                 <option>Fire Safety</option>
-                <option>Chemical</option>
+                <option>First Aid</option>
+                <option>Compliance</option>
             </select>
 
             <input type="date" id="date">
             <input type="text" id="location" placeholder="Event Location">
             <input type="number" id="capacity" placeholder="20">
             
-            <button>Save Event</button>
-            <button>Clear</button>
+            <div>
+            <button onclick="saveEvent()">Save Event</button>
+            <button onclick="clearForm()">Clear</button>
+            </div>
         </div>
 
         <table>
@@ -51,11 +54,12 @@
                 </tr>
             </thead>
         
-        <tbody>
+        <tbody id="eventTableBody">
 
         </tbody>
         </table>
     </div>
+    <script src="../static/js/training_events.js"></script>
     
 </body>
 </html>
