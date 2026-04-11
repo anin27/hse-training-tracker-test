@@ -4,34 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Training Events - HSE Tracker</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <nav>
+    <div class ="navbar">
         <h2>Petrofac HSE Tracker</h2>
-        <div>
-            <a href="index.html">Dashboard</a>
-            <a href="events.html" class="active">Training Events</a>
-            <a href="registrations.html">Registrations</a>
-        </div>
-    </nav>
+        <div class="nav-links">
+            <a href="/" class="active">Training Events</a>
+            <a href="/registrations-page">Registrations</a>
+        </div> 
+    </div>
+
     <div class="container">
-        <h2>Training Events</h2>
-        <div class="form-section">
+        <h3>Training Events</h3>
+
+        <div class="form-box">
+
             <h3>Add New Event</h3>
-            <input type="text" id="eventTitle" placeholder="e.g. Offshore Safety">
+
+            <input type="hidden" id="eventId" placeholder="e.g. Offshore Safety">
+
             <select id="eventCategory">
                 <option value="">Select Category</option>
-                <option value="Safety">Safety</option>
-                <option value="Chemical">Chemical</option>
+                <option>Safety</option>
+                <option>Fire Safety</option>
+                <option>Chemical</option>
             </select>
-            <input type="date" id="eventDate">
-            <input type="text" id="eventLocation" placeholder="e.g. Aberdeen Training Centre">
-            <input type="number" id="eventCapacity" placeholder="20" min="1">
-            <textarea id="eventDescription" rows="3" placeholder="Brief description..."></textarea>
-            <button onclick="saveEvent()">Save Event</button>
-            <button onclick="clearForm()" class="secondary">Clear</button>
+
+            <input type="date" id="date">
+            <input type="text" id="location" placeholder="Event Location">
+            <input type="number" id="capacity" placeholder="20">
+            
+            <button>Save Event</button>
+            <button>Clear</button>
         </div>
+
         <table>
             <thead>
                 <tr>
@@ -39,18 +46,16 @@
                     <th>Title</th>
                     <th>Category</th>
                     <th>Date</th>
+                    <th>Capacity</th>
                     <th>Actions</th>
                 </tr>
             </thead>
         
-        <tbody id="eventTableBody">
+        <tbody>
 
         </tbody>
         </table>
     </div>
-    <script src="api.js"></script>
-    <script src="app.js"></script>
-
     
 </body>
 </html>
