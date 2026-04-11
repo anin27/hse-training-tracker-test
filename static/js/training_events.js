@@ -46,6 +46,8 @@ function saveEvent()
         existingEvent.capacity = capacity;
     }
 
+    alert("Event saved successfully!")
+
     showEvents();
     clearForm();
     
