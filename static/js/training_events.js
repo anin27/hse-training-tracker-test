@@ -1,31 +1,50 @@
 let events = [];
-let eventIdCounter = 1;
+
 
 function saveEvent()
 {
+    let eventId = document.getElementById("eventId").value;
     let title = document.getElementById("title").value;
     let category = document.getElementById("category").value;
     let date = document.getElementById("date").value;
     let location = document.getElementById("location").value;
     let capacity = document.getElementById("capacity").value;
 
-    if (title === ""  || category === "" || date === "" || location === "" || capacity === ""){
+    if (eventId === ""){
         return;
 
     }
 
-    let event ={
-        id: eventIdCounter,
-        title: title,
-        category: category,
-        date: date,
-        location: location,
-        capacity: capacity
+    let existingEvent = null;
 
-    };
+    for (let i =0; i < events.length; i++){
+        if (events[i].id === eventId){
+            existingEvent = events[i];
+            break;
+        }
+    }
 
-    events.push(event);
-    eventIdCounter = eventIdCounter + 1;
+    if (existingEvent ===null){
+        
+        let event ={
+            id: eventIdCounter,
+            title: title,
+            category: category,
+            date: date,
+            location: location,
+            capacity: capacity
+
+        };
+        
+        events.push(event);
+
+    }   else{
+        existingEvent.title = title;
+        existingEvent.category = category;
+        existingEvent.date = date;
+        existingEvent.location = location;
+        existingEvent.capacity = capacity;
+    }
 
     showEvents();
     clearForm();
@@ -47,9 +66,9 @@ function showEvents(){
             <td>${event.date}</td>
             <td>${event.location}</td>
             <td>${event.capacity}</td>
-            <td>
-            <button onclick="editEvent(${event.id})">Edit</button>
-            <button onclick="deleteEvent(${event.id})">Delete</button>
+            <td class ="action-buttons">
+            <button onclick="editEvent('${event.id}')">Edit</button>
+            <button onclick="deleteEvent('${event.id}')">Delete</button>
             </td>
 
         </tr>
@@ -58,14 +77,23 @@ function showEvents(){
 
 }
 
-function clearForm() {
-    document.getElementById("eventId").value = "";
-    document.getElementById("title").value = "";
-    document.getElementById("category").value = "";
-    document.getElementById("date").value = "";
-    document.getElementById("location").value = "";
-    document.getElementById("capacity").value = "";
+function editEvent(id){
+    for (let i = 0; i < events.length; i++){
+        if (events[i].id === id){
+            let event = events[i];
+            document.getElementById("eventId").value = "";
+            document.getElementById("title").value = "";
+            document.getElementById("category").value = "";
+            document.getElementById("date").value = "";
+            document.getElementById("location").value = "";
+            document.getElementById("capacity").value = "";
+
+            break;
+
+        }
+    }
 }
+
 
 function deleteEvent(id) {
     for (let i = 0; i < events.length; i++) {
@@ -76,4 +104,13 @@ function deleteEvent(id) {
     }
 
     showEvents();
+}
+
+function clearForm() {
+    document.getElementById("eventId").value = "";
+    document.getElementById("title").value = "";
+    document.getElementById("category").value = "";
+    document.getElementById("date").value = "";
+    document.getElementById("location").value = "";
+    document.getElementById("capacity").value = "";
 }

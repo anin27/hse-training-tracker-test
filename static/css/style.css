@@ -76,6 +76,8 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    table-layout: fixed;
+    background-color: #d3d3d3;
 }
 
 th,
@@ -83,9 +85,20 @@ td {
     padding: 14px 10px;
     text-align: left;
     border-bottom: 1px solid #aaa;
+    vertical-align: middle;
 }
 
 
 th {
     background-color: #e0e0e0;
+}
+
+.action-buttons {
+    white-space: nowrap;
+}
+
+.action-buttons button {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 6px;
 }
