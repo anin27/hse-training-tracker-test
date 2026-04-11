@@ -4,42 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrations - HSE Tracker</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <nav>
+    <div class="navbar">
         <h2>Petrofac HSE Tracker</h2>
-        <div>
-            <a href="index.html">Dashboard</a>
-            <a href="events.html">Training Events</a>
-            <a href="registrations.html" class="active">Registrations</a>
+
+        <div class="nav-links">
+            <a href="/">Training Events</a>
+            <a href="/registrations-page" class="active">Registrations</a>
         </div>
-    </nav>
+    </div>
+
     <div class="container">
-        <h2>Employee Registrations</h2>
-        <div class="form-section">
+        <h3>Employee Registrations</h3>
+
+        <div class="form-box">
+
         <h3>Register Employee</h3>
-        <input type="text" id="regName" placeholder="e.g. Employee Name">
-        <input type="text" id="regId" placeholder="e.g. Employee ID">
-        <select id="regDept">
+        <input type="hidden" id="registrationId">
+
+        <input type="text" id="employeeName" placeholder="Employee Name">
+        <input type="text" id="employeeId" placeholder="Employee ID">
+
+        <select id="department">
             <option value="">Select Department</option>
-            <option value="Offshore Operations">Offshore Operations</option>
-            <option value="HSE Department">HSE Department</option>
-            <option value="Engineering">Engineering</option>
+            <option>Offshore Operations</option>
+            <option>HSE Department</option>
+            <option>Engineering</option>
+            <option>Maintenance</option>
         </select>
-        <select id="regEvent">
+
+        <select id="trainingEvent">
             <option value="">Select Training Event</option>
         </select>
-        <select id="regEvent">
+
+        <select id="status">
             <option value="Pending">Pending</option>
             <option value="Attended">Attended</option>
-            <option value="Absent">Absent</option>
+            <option value="Completed">Absent</option>
         </select>
-        <button onclick="registerEmployee()">Register Employee</button>
-        <button onclick="clearRegForm()" class="secondary">Clear</button>
+        
+        <button>Register Employee</button>
+        <button>Clear</button>
         </div>
-    
-    <table>
+        
+        <table>
             <thead>
                 <tr>
                     <th>ID</th>
@@ -51,12 +61,11 @@
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody id="regTableBody">
+            <tbody>
 
             </tbody>
     </table>
     </div>   
-    <script src="api.js"></script> 
-    <script src="app.js"></script>
+    
 </body>
 </html>
