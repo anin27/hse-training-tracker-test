@@ -23,3 +23,13 @@ function saveRegistration() {
     let department = document.getElementById("department").value;
     let trainingEvent = document.getElementById("trainingEvent").value;
     let status = document.getElementById("status").value;
+
+    if (
+        employeeName === "" &&
+        employeeId === "" &&
+        department === "" &&
+        trainingEvent === "" &&
+        status === ""
+    ){
+        return;
+    }

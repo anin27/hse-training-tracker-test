@@ -1,12 +1,20 @@
 let events = [];
 
+let savedEvents = localStorage.getItem("events");
+if (savedEvents) {
+
+    events = JSON.parse(savedEvents);
+}
+
+showEvents();
+
 function saveEvent() {
-    let eventId = document.getElementById("eventId").value.trim();
-    let title = document.getElementById("title").value.trim();
+    let eventId = document.getElementById("eventId").value;
+    let title = document.getElementById("title").value;
     let category = document.getElementById("category").value;
     let date = document.getElementById("date").value;
-    let location = document.getElementById("location").value.trim();
-    let capacity = document.getElementById("capacity").value.trim();
+    let location = document.getElementById("location").value;
+    let capacity = document.getElementById("capacity").value;
 
     if (eventId === "") {
         return;
@@ -31,7 +39,7 @@ function saveEvent() {
             capacity: capacity
         };
 
-        events.push(event);
+        events.push(newEvent);
     } else {
         existingEvent.title = title;
         existingEvent.category = category;
@@ -39,6 +47,8 @@ function saveEvent() {
         existingEvent.location = location;
         existingEvent.capacity = capacity;
     }
+
+    localStorage.setItem("events", JSON.stringify(events));
 
     alert("Event saved successfully!");
 
@@ -53,21 +63,21 @@ function showEvents(){
     for (let i = 0; i < events.length; i++){
         let event = events[i];
 
-        tableBody.innerHTML +=`
-        <tr>
-            <td>${event.id}</td>
-            <td>${event.title}</td>
-            <td>${event.category}</td>
-            <td>${event.date}</td>
-            <td>${event.location}</td>
-            <td>${event.capacity}</td>
-            <td class ="action-buttons">
-            <button onclick="editEvent('${event.id}')">Edit</button>
-            <button onclick="deleteEvent('${event.id}')">Delete</button>
-            </td>
+        let row = "<tr>";
+        row += "<td>" + event.id + "</td>";
+        row += "<td>" + event.title + "</td>";
+        row += "<td>" + event.category + "</td>";
+        row += "<td>" + event.date     + "</td>";
+        row += "<td>" + event.location + "</td>";
+        row += "<td>" + event.capacity + "</td>";
+        row += "<td class='action-buttons'>";
+        row += "<button onclick=\"editEvent('"   + event.id + "')\">Edit</button>";
+        row += "<button onclick=\"deleteEvent('" + event.id + "')\">Delete</button>";
+        row += "</td>";
+        row += "</tr>";
 
-        </tr>
-        `;
+        tableBody.innerHTML += row;
+
     }
 
 }
@@ -97,6 +107,8 @@ function deleteEvent(id) {
             break;
         }
     }
+
+    localStorage.setItem("events", JSON.stringify(events));
 
     showEvents();
 }
