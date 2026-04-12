@@ -2,7 +2,7 @@ let registrations =[]
 
 let savedRegistrations = localStorage.getItem("registrations");
 if (savedRegistrations) {
-    registrations = JSON.parsse(savedRegistrations);
+    registrations = JSON.parse(savedRegistrations);
     
 }
 loadTrainingEvents();
@@ -82,3 +82,10 @@ function removeRegistration(index) {
 
     alert("Registration removed successfully!");
 }
+
+function clearRegistrationForm() {
+    document.getElementById("employeeName").value  = "";
+    document.getElementById("employeeId").value    = "";
+    document.getElementById("department").value    = "";
+    document.getElementById("trainingEvent").value = "";
+    document.getElementById("status").value = "Pending";
