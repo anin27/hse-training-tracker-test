@@ -110,3 +110,17 @@ def training_events_page():
 @app.route("/registrations-page")
 def registrations_page():
     return render_template("registrations.html")
+
+@app.route("/events", methods=["GET"])
+def get_events():
+    conn = get_db_connection()
+    rows = conn.execute("SELECT * FROM training_events").fetchall()
+    conn.close()
+
+    events = []
+
+    for row in rows:
+        events.append(dict(row))
+
+    return jsonify(events)
+    
