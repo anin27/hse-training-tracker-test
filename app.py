@@ -197,3 +197,5 @@ def save_registration():
     conn.close()
 
     return jsonify({"message": "Registration saved successfully"})
+    if __name__ == "__main__":
+    app.run(debug=True)
