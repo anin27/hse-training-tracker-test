@@ -56,22 +56,22 @@ function saveEvent() {
     clearForm();
 }
 
-function showEvents(){
+function showEvents() {
     let tableBody = document.getElementById("eventTableBody");
     tableBody.innerHTML = "";
 
-    for (let i = 0; i < events.length; i++){
+    for (let i = 0; i < events.length; i++) {
         let event = events[i];
 
         let row = "<tr>";
         row += "<td>" + event.id + "</td>";
         row += "<td>" + event.title + "</td>";
         row += "<td>" + event.category + "</td>";
-        row += "<td>" + event.date     + "</td>";
+        row += "<td>" + event.date + "</td>";
         row += "<td>" + event.location + "</td>";
         row += "<td>" + event.capacity + "</td>";
         row += "<td class='action-buttons'>";
-        row += "<button onclick=\"editEvent('"   + event.id + "')\">Edit</button>";
+        row += "<button onclick=\"editEvent('" + event.id + "')\">Edit</button>";
         row += "<button onclick=\"deleteEvent('" + event.id + "')\">Delete</button>";
         row += "</td>";
         row += "</tr>";
@@ -82,9 +82,9 @@ function showEvents(){
 
 }
 
-function editEvent(id){
-    for (let i = 0; i < events.length; i++){
-        if (events[i].id === id){
+function editEvent(id) {
+    for (let i = 0; i < events.length; i++) {
+        if (events[i].id === id) {
             let event = events[i];
             document.getElementById("eventId").value = event.id;
             document.getElementById("title").value = event.title;
@@ -102,7 +102,7 @@ function editEvent(id){
 
 function deleteEvent(id) {
     for (let i = 0; i < events.length; i++) {
-        if (events[i].id === id){
+        if (events[i].id === id) {
             events.splice(i, 1);
             break;
         }
