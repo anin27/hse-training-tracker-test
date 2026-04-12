@@ -1,24 +1,14 @@
 let registrations = [];
 
-let savedRegistrations = localStorage.getItem("registrations");
-
-if (savedRegistrations) {
-    registrations = JSON.parse(savedRegistrations);
-}
-
 loadTrainingEvents();
-showRegistrations();
+loadRegistrations();
 
-function loadTrainingEvents() {
+async function loadTrainingEvents() {
     let dropdown = document.getElementById("trainingEvent");
     dropdown.innerHTML = '<option value="">Select Training Event</option>';
 
-    let savedEvents = localStorage.getItem("events");
-    let events = [];
-
-    if (savedEvents) {
-        events = JSON.parse(savedEvents);
-    }
+    let response = await fetch("/events");
+    let events = await response.json();
 
     for (let i = 0; i < events.length; i++) {
         let option = "<option value='" + events[i].title + "'>" + events[i].title + "</option>";
@@ -26,7 +16,14 @@ function loadTrainingEvents() {
     }
 }
 
-function saveRegistration() {
+async function loadRegistrations() {
+    let response = await fetch("/registrations");
+    registrations = await response.json();
+
+    showRegistrations();
+}
+
+async function saveRegistration() {
     let name = document.getElementById("employeeName").value;
     let empId = document.getElementById("employeeId").value;
     let dept = document.getElementById("department").value;
@@ -45,11 +42,16 @@ function saveRegistration() {
         status: status
     };
 
-    registrations.push(newRegistration);
-    localStorage.setItem("registrations", JSON.stringify(registrations));
+    await fetch("/registrations", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newRegistration)
+    });
 
-    showRegistrations();
     clearRegistrationForm();
+    loadRegistrations();
 }
 
 function showRegistrations() {
@@ -60,28 +62,29 @@ function showRegistrations() {
         let r = registrations[i];
 
         let row = "<tr>";
-        row += "<td>" + r.employeeName + "</td>";
-        row += "<td>" + r.employeeId + "</td>";
+        row += "<td>" + r.employee_name + "</td>";
+        row += "<td>" + r.employee_id + "</td>";
         row += "<td>" + r.department + "</td>";
-        row += "<td>" + r.trainingEvent + "</td>";
+        row += "<td>" + r.training_event + "</td>";
         row += "<td>" + r.status + "</td>";
-        row += "<td><button onclick='removeRegistration(" + i + ")'>Remove</button></td>";
+        row += "<td><button onclick='removeRegistration(" + r.id + ")'>Remove</button></td>";
         row += "</tr>";
 
         table.innerHTML += row;
     }
 }
 
-function removeRegistration(index) {
+async function removeRegistration(id) {
     if (!confirm("Are you sure you want to remove this registration?")) {
         return;
     }
 
-    registrations.splice(index, 1);
-    localStorage.setItem("registrations", JSON.stringify(registrations));
+    await fetch("/registrations/" + id, {
+        method: "DELETE"
+    });
 
-    showRegistrations();
     alert("Registration removed successfully!");
+    loadRegistrations();
 }
 
 function clearRegistrationForm() {
