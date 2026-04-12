@@ -39,7 +39,7 @@ function saveEvent() {
             capacity: capacity
         };
 
-        events.push(newEvent);
+        events.push(event);
     } else {
         existingEvent.title = title;
         existingEvent.category = category;
