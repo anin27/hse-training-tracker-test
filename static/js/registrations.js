@@ -6,7 +6,7 @@ if (savedRegistrations) {
     
 }
 loadTrainingEvents();
-showRegistration();
+showRegistrations();
 
 function loadTrainingEvents() {
     let dropdown = document.getElementById("trainingEvent");
@@ -18,14 +18,14 @@ function loadTrainingEvents() {
         events = JSON.parse(savedEvents);
         }
         
-        for (let i = 0, i <events.length; i++){
-            let option = "<opion>" + events[1].title + "</options>";
+        for (let i = 0, i < events.length; i++){
+            let option = "<option>" + events[i].title + "</options>";
             dropdown.innerHTML += option;
         
     }
 }
 
-function savedRegistrations(){
+function savedRegistration(){
     let name = document.getElementById("employeeName").value;
     let empId = document.getElementById("employeeId").value;
     let dept = document.getElementById("department").value;
@@ -89,3 +89,4 @@ function clearRegistrationForm() {
     document.getElementById("department").value    = "";
     document.getElementById("trainingEvent").value = "";
     document.getElementById("status").value = "Pending";
+}
