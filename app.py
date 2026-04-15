@@ -18,22 +18,22 @@ def create_tables():
     conn.execute("""
         CREATE TABLE IF NOT EXISTS training_events (
             id TEXT PRIMARY KEY,
-            title TEXT,
-            category TEXT,
-            date TEXT,
-            location TEXT,
-            capacity INTEGER
+            title TEXT NOT NULL,
+            category TEXT NOT NULL,
+            date TEXT NOT NULL,
+            location TEXT NOT NULL,
+            capacity INTEGER NOT NULL
         )
     """)
 
     conn.execute("""
         CREATE TABLE IF NOT EXISTS registrations (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            employee_name TEXT,
-            employee_id TEXT,
-            department TEXT,
-            training_event TEXT,
-            status TEXT
+            employee_name TEXT NOT NULL,
+            employee_id TEXT NOT NULL,
+            department TEXT NOT NULL,
+            training_event TEXT NOT NULL,
+            status TEXT NOT NULL
         )
     """)
 
@@ -57,11 +57,10 @@ def registrations_page():
 @app.route("/events", methods=["GET"])
 def get_events():
     conn = get_db_connection()
-    rows = conn.execute("SELECT * FROM training_events").fetchall()
+    rows = conn.execute("SELECT * FROM training_events ORDER BY date ASC").fetchall()
     conn.close()
 
     events = []
-
     for row in rows:
         events.append(dict(row))
 
@@ -69,59 +68,100 @@ def get_events():
 
 
 @app.route("/events", methods=["POST"])
-def save_event():
+def create_event():
     data = request.get_json()
 
-    event_id = data["id"]
-    title = data["title"]
-    category = data["category"]
-    date = data["date"]
-    location = data["location"]
-    capacity = data["capacity"]
+    event_id = data.get("id", "").strip()
+    title = data.get("title", "").strip()
+    category = data.get("category", "").strip()
+    date = data.get("date", "").strip()
+    location = data.get("location", "").strip()
+    capacity = data.get("capacity", "").strip()
+
+    if not event_id or not title or not category or not date or not location or not capacity:
+        return jsonify({"message": "Please fill in all event fields."}), 400
 
     conn = get_db_connection()
 
-    old_event = conn.execute(
+    existing_event = conn.execute(
         "SELECT * FROM training_events WHERE id = ?",
         (event_id,)
     ).fetchone()
 
-    if old_event is None:
-        conn.execute("""
-            INSERT INTO training_events (id, title, category, date, location, capacity)
-            VALUES (?, ?, ?, ?, ?, ?)
-        """, (event_id, title, category, date, location, capacity))
-    else:
-        conn.execute("""
-            UPDATE training_events
-            SET title = ?, category = ?, date = ?, location = ?, capacity = ?
-            WHERE id = ?
-        """, (title, category, date, location, capacity, event_id))
+    if existing_event:
+        conn.close()
+        return jsonify({"message": "An event with this ID already exists."}), 400
+
+    conn.execute("""
+        INSERT INTO training_events (id, title, category, date, location, capacity)
+        VALUES (?, ?, ?, ?, ?, ?)
+    """, (event_id, title, category, date, location, capacity))
 
     conn.commit()
     conn.close()
 
-    return jsonify({"message": "Event saved successfully"})
+    return jsonify({"message": "Event created successfully."})
+
+
+@app.route("/events/<event_id>", methods=["PUT"])
+def update_event(event_id):
+    data = request.get_json()
+
+    title = data.get("title", "").strip()
+    category = data.get("category", "").strip()
+    date = data.get("date", "").strip()
+    location = data.get("location", "").strip()
+    capacity = data.get("capacity", "").strip()
+
+    if not title or not category or not date or not location or not capacity:
+        return jsonify({"message": "Please fill in all event fields."}), 400
+
+    conn = get_db_connection()
+
+    existing_event = conn.execute(
+        "SELECT * FROM training_events WHERE id = ?",
+        (event_id,)
+    ).fetchone()
+
+    if not existing_event:
+        conn.close()
+        return jsonify({"message": "Event not found."}), 404
+
+    conn.execute("""
+        UPDATE training_events
+        SET title = ?, category = ?, date = ?, location = ?, capacity = ?
+        WHERE id = ?
+    """, (title, category, date, location, capacity, event_id))
+
+    conn.commit()
+    conn.close()
+
+    return jsonify({"message": "Event updated successfully."})
 
 
 @app.route("/events/<event_id>", methods=["DELETE"])
 def delete_event(event_id):
     conn = get_db_connection()
-    conn.execute("DELETE FROM training_events WHERE id = ?", (event_id,))
+
+    conn.execute("DELETE FROM registrations WHERE training_event = ?", (event_id,))
+    deleted = conn.execute("DELETE FROM training_events WHERE id = ?", (event_id,))
+
     conn.commit()
     conn.close()
 
-    return jsonify({"message": "Event deleted successfully"})
+    if deleted.rowcount == 0:
+        return jsonify({"message": "Event not found."}), 404
+
+    return jsonify({"message": "Event deleted successfully."})
 
 
 @app.route("/registrations", methods=["GET"])
 def get_registrations():
     conn = get_db_connection()
-    rows = conn.execute("SELECT * FROM registrations").fetchall()
+    rows = conn.execute("SELECT * FROM registrations ORDER BY id DESC").fetchall()
     conn.close()
 
     registrations = []
-
     for row in rows:
         registrations.append(dict(row))
 
@@ -129,16 +169,29 @@ def get_registrations():
 
 
 @app.route("/registrations", methods=["POST"])
-def save_registration():
+def create_registration():
     data = request.get_json()
 
-    employee_name = data["employeeName"]
-    employee_id = data["employeeId"]
-    department = data["department"]
-    training_event = data["trainingEvent"]
-    status = data["status"]
+    employee_name = data.get("employeeName", "").strip()
+    employee_id = data.get("employeeId", "").strip()
+    department = data.get("department", "").strip()
+    training_event = data.get("trainingEvent", "").strip()
+    status = data.get("status", "").strip()
+
+    if not employee_name or not employee_id or not department or not training_event or not status:
+        return jsonify({"message": "Please fill in all registration fields."}), 400
 
     conn = get_db_connection()
+
+    event_exists = conn.execute(
+        "SELECT * FROM training_events WHERE id = ?",
+        (training_event,)
+    ).fetchone()
+
+    if not event_exists:
+        conn.close()
+        return jsonify({"message": "Selected training event does not exist."}), 400
+
     conn.execute("""
         INSERT INTO registrations (employee_name, employee_id, department, training_event, status)
         VALUES (?, ?, ?, ?, ?)
@@ -147,17 +200,25 @@ def save_registration():
     conn.commit()
     conn.close()
 
-    return jsonify({"message": "Registration saved successfully"})
+    return jsonify({"message": "Registration created successfully."})
 
 
 @app.route("/registrations/<int:registration_id>", methods=["DELETE"])
 def delete_registration(registration_id):
     conn = get_db_connection()
-    conn.execute("DELETE FROM registrations WHERE id = ?", (registration_id,))
+
+    deleted = conn.execute(
+        "DELETE FROM registrations WHERE id = ?",
+        (registration_id,)
+    )
+
     conn.commit()
     conn.close()
 
-    return jsonify({"message": "Registration removed successfully"})
+    if deleted.rowcount == 0:
+        return jsonify({"message": "Registration not found."}), 404
+
+    return jsonify({"message": "Registration deleted successfully."})
 
 
 if __name__ == "__main__":
