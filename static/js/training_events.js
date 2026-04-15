@@ -1,17 +1,14 @@
 let events = [];
 let eventEditMode = false;
 
-// Changed: load events when the page opens
 loadEvents();
 
-// Changed: fetch all events from backend
 async function loadEvents() {
     let response = await fetch("/events");
     events = await response.json();
     showEvents();
 }
 
-// Changed: use popup alerts and support both save and update
 async function saveEvent() {
     let eventId = document.getElementById("eventId").value.trim();
     let title = document.getElementById("title").value.trim();
@@ -62,7 +59,6 @@ async function saveEvent() {
     loadEvents();
 }
 
-// Changed: show events in the table
 function showEvents() {
     let tableBody = document.getElementById("eventTableBody");
     tableBody.innerHTML = "";
@@ -85,7 +81,6 @@ function showEvents() {
     }
 }
 
-// Changed: added edit mode for events
 function editEvent(id) {
     for (let event of events) {
         if (event.id === id) {
@@ -104,7 +99,6 @@ function editEvent(id) {
     }
 }
 
-// Changed: added delete confirmation popup
 async function deleteEvent(id) {
     let confirmed = confirm("Are you sure you want to delete this event?");
     if (!confirmed) {
@@ -120,8 +114,6 @@ async function deleteEvent(id) {
     clearForm();
     loadEvents();
 }
-
-// Changed: reset form after save, update, or delete
 function clearForm() {
     document.getElementById("eventId").value = "";
     document.getElementById("eventId").disabled = false;

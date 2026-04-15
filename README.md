@@ -63,4 +63,4 @@ hse-training-tracker/
 
 The application is deployed and can be accessed here:
 
-http://hse-tracker-prod.eba-pu8v3pi2.eu-west-1.elasticbeanstalk.com
+

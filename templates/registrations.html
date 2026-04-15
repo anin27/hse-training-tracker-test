@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <!-- Changed: added top navigation bar -->
+    
     <nav class="navbar">
         <h2>Petrofac HSE Tracker</h2>
         <div class="nav-links">
@@ -33,7 +33,6 @@
                     <option value="Maintenance">Maintenance</option>
                 </select>
 
-                <!-- Changed: kept training event dropdown in the form -->
                 <select id="trainingEvent">
                     <option value="">Select Training Event</option>
                 </select>
@@ -51,7 +50,6 @@
             </div>
         </section>
 
-        <!-- Changed: removed search, status filter, and refresh controls -->
         <section class="card">
             <div class="table-wrap">
                 <table>

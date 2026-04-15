@@ -10,80 +10,94 @@ async function loadTrainingEvents() {
     let response = await fetch("/events");
     let events = await response.json();
 
-    for (let i = 0; i < events.length; i++) {
-        let option = "<option value='" + events[i].title + "'>" + events[i].title + "</option>";
-        dropdown.innerHTML += option;
+    for (let event of events) {
+        let option = document.createElement("option");
+        option.value = event.id;
+        option.textContent = event.title;
+        dropdown.appendChild(option);
     }
 }
 
 async function loadRegistrations() {
     let response = await fetch("/registrations");
     registrations = await response.json();
-
     showRegistrations();
 }
 
 async function saveRegistration() {
-    let name = document.getElementById("employeeName").value;
-    let empId = document.getElementById("employeeId").value;
-    let dept = document.getElementById("department").value;
-    let event = document.getElementById("trainingEvent").value;
+    let employeeName = document.getElementById("employeeName").value.trim();
+    let employeeId = document.getElementById("employeeId").value.trim();
+    let department = document.getElementById("department").value;
+    let trainingEvent = document.getElementById("trainingEvent").value;
     let status = document.getElementById("status").value;
 
-    if (name === "" && empId === "" && dept === "" && event === "" && status === "") {
+    if (!employeeName || !employeeId || !department || !trainingEvent || !status) {
+        alert("Please fill in all registration fields.");
         return;
     }
 
-    let newRegistration = {
-        employeeName: name,
-        employeeId: empId,
-        department: dept,
-        trainingEvent: event,
+    let registrationData = {
+        employeeName: employeeName,
+        employeeId: employeeId,
+        department: department,
+        trainingEvent: trainingEvent,
         status: status
     };
 
-    await fetch("/registrations", {
+    let response = await fetch("/registrations", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify(newRegistration)
+        body: JSON.stringify(registrationData)
     });
 
+    let result = await response.json();
+
+    if (!response.ok) {
+        alert(result.message);
+        return;
+    }
+
+    alert(result.message || "Registration saved successfully.");
     clearRegistrationForm();
     loadRegistrations();
+    loadTrainingEvents();
 }
 
 function showRegistrations() {
-    let table = document.getElementById("regTableBody");
-    table.innerHTML = "";
+    let tableBody = document.getElementById("regTableBody");
+    tableBody.innerHTML = "";
 
-    for (let i = 0; i < registrations.length; i++) {
-        let r = registrations[i];
-
-        let row = "<tr>";
-        row += "<td>" + r.employee_name + "</td>";
-        row += "<td>" + r.employee_id + "</td>";
-        row += "<td>" + r.department + "</td>";
-        row += "<td>" + r.training_event + "</td>";
-        row += "<td>" + r.status + "</td>";
-        row += "<td><button onclick='removeRegistration(" + r.id + ")'>Remove</button></td>";
-        row += "</tr>";
-
-        table.innerHTML += row;
+    for (let registration of registrations) {
+        let row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${registration.employee_name}</td>
+            <td>${registration.employee_id}</td>
+            <td>${registration.department}</td>
+            <td>${registration.training_event}</td>
+            <td>${registration.status}</td>
+            <td class="action-buttons">
+                <button class="danger-button" onclick="removeRegistration(${registration.id})">Delete</button>
+            </td>
+        `;
+        tableBody.appendChild(row);
     }
 }
 
 async function removeRegistration(id) {
-    if (!confirm("Are you sure you want to remove this registration?")) {
+    let confirmed = confirm("Are you sure you want to delete this registration?");
+    if (!confirmed) {
         return;
     }
 
-    await fetch("/registrations/" + id, {
+    let response = await fetch(`/registrations/${id}`, {
         method: "DELETE"
     });
 
-    alert("Registration removed successfully!");
+    let result = await response.json();
+    alert(result.message || "Registration removed successfully.");
+    clearRegistrationForm();
     loadRegistrations();
 }
 
