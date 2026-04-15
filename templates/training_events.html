@@ -7,61 +7,63 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <div class ="navbar">
+    
+    <nav class="navbar">
         <h2>Petrofac HSE Tracker</h2>
         <div class="nav-links">
             <a href="/" class="active">Training Events</a>
             <a href="/registrations-page">Registrations</a>
-        </div> 
-    </div>
-
-    <div class="container">
-        <h3>Training Events</h3>
-
-        <div class="form-box">
-
-            <h3>Add New Event</h3>
-
-            <input type="text" id="eventId" placeholder="Event ID">
-            <input type="text" id="title" placeholder="Event Title">
-
-            <select id="category">
-                <option value="">Select Category</option>
-                <option value="Safety">Safety</option>
-                <option value="Fire Safety">Fire Safety</option>
-                <option value="First Aid">First Aid</option>
-                <option value="Compliance">Compliance</option>
-            </select>
-
-            <input type="date" id="date">
-            <input type="text" id="location" placeholder="Event Location">
-            <input type="number" id="capacity" placeholder="20">
-            
-            <div>
-            <button onclick="saveEvent()">Save Event</button>
-            <button onclick="clearForm()">Clear</button>
-            </div>
         </div>
+    </nav>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Title</th>
-                    <th>Category</th>
-                    <th>Date</th>
-                    <th>Location</th>
-                    <th>Capacity</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
+    <main class="page-wrapper">
+        <section class="card">
+            <h2>Training Events</h2>
+            <p class="helper-text">Create, update, and delete training events.</p>
+
+            <div class="form-grid">
+                <input type="text" id="eventId" placeholder="Event ID">
+                <input type="text" id="title" placeholder="Event Title">
+
+                <select id="category">
+                    <option value="">Select Category</option>
+                    <option value="Safety">Safety</option>
+                    <option value="Fire Safety">Fire Safety</option>
+                    <option value="First Aid">First Aid</option>
+                    <option value="Compliance">Compliance</option>
+                </select>
+
+                <input type="date" id="date">
+                <input type="text" id="location" placeholder="Event Location">
+                <input type="number" id="capacity" placeholder="Capacity">
+            </div>
+
+            <div class="button-row">
+                <button id="saveEventButton" onclick="saveEvent()">Save Event</button>
+                <button class="secondary-button" onclick="clearForm()">Clear</button>
+            </div>
+        </section>
         
-        <tbody id="eventTableBody">
+        <section class="card">
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Date</th>
+                            <th>Location</th>
+                            <th>Capacity</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="eventTableBody"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
 
-        </tbody>
-        </table>
-    </div>
     <script src="{{ url_for('static', filename='js/training_events.js') }}"></script>
-    
 </body>
 </html>
