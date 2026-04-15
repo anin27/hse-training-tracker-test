@@ -5,12 +5,10 @@ app = Flask(__name__)
 
 DATABASE = "hse_tracker.db"
 
-
 def get_db_connection():
     conn = sqlite3.connect(DATABASE)
     conn.row_factory = sqlite3.Row
     return conn
-
 
 def create_tables():
     conn = get_db_connection()
@@ -43,16 +41,13 @@ def create_tables():
 
 create_tables()
 
-
 @app.route("/")
 def training_events_page():
     return render_template("training_events.html")
 
-
 @app.route("/registrations-page")
 def registrations_page():
     return render_template("registrations.html")
-
 
 @app.route("/events", methods=["GET"])
 def get_events():
@@ -65,7 +60,6 @@ def get_events():
         events.append(dict(row))
 
     return jsonify(events)
-
 
 @app.route("/events", methods=["POST"])
 def create_event():
@@ -102,7 +96,6 @@ def create_event():
 
     return jsonify({"message": "Event created successfully."})
 
-
 @app.route("/events/<event_id>", methods=["PUT"])
 def update_event(event_id):
     data = request.get_json()
@@ -138,7 +131,6 @@ def update_event(event_id):
 
     return jsonify({"message": "Event updated successfully."})
 
-
 @app.route("/events/<event_id>", methods=["DELETE"])
 def delete_event(event_id):
     conn = get_db_connection()
@@ -154,7 +146,6 @@ def delete_event(event_id):
 
     return jsonify({"message": "Event deleted successfully."})
 
-
 @app.route("/registrations", methods=["GET"])
 def get_registrations():
     conn = get_db_connection()
@@ -167,7 +158,6 @@ def get_registrations():
 
     return jsonify(registrations)
 
-
 @app.route("/registrations", methods=["POST"])
 def create_registration():
     data = request.get_json()
@@ -177,6 +167,7 @@ def create_registration():
     department = data.get("department", "").strip()
     training_event = data.get("trainingEvent", "").strip()
     status = data.get("status", "").strip()
+
 
     if not employee_name or not employee_id or not department or not training_event or not status:
         return jsonify({"message": "Please fill in all registration fields."}), 400
@@ -219,7 +210,6 @@ def delete_registration(registration_id):
         return jsonify({"message": "Registration not found."}), 404
 
     return jsonify({"message": "Registration deleted successfully."})
-
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
