@@ -200,16 +200,17 @@ hse-training-tracker/
 AI tools were used in a limited and supportive way during the development of this project, especially when resolving technical issues that were difficult to debug manually.
 
 The main AI tools used were:
-- Claude
-- ChatGPT
-- Codex
+- Claude Ai
+
+Links
+- https://claude.ai/share/380be729-f668-457c-9cee-c51aefb5b02a
+- https://claude.ai/share/9d15a261-8708-4426-adb2-0a0da17a427e
+- https://claude.ai/share/f484609c-25bd-4d50-92c2-54410d151df4
 
 AI support was used for:
 - troubleshooting Flask backend errors
-- identifying mismatches between database fields and application code
 - improving frontend and backend consistency
 - assisting with deployment issues in AWS Elastic Beanstalk
-- improving the clarity of documentation
 
 ## Live Demo
 
